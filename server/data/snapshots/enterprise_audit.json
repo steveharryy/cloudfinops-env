@@ -1,0 +1,9 @@
+[
+    {"id": "vm-prod-db-1", "type": "instance", "status": "running", "cpu_usage": 45.0, "cost_per_hour": 0.384, "metadata": {"instance_type": "m5.2xlarge", "env": "prod"}},
+    {"id": "vm-dev-web-1", "type": "instance", "status": "running", "cpu_usage": 5.0, "cost_per_hour": 0.096, "metadata": {"instance_type": "m5.large", "env": "dev"}},
+    {"id": "vm-prod-lb-1", "type": "instance", "status": "running", "cpu_usage": 92.5, "cost_per_hour": 0.0208, "metadata": {"instance_type": "t3.small", "env": "prod"}},
+    {"id": "vol-backup-old", "type": "storage", "status": "available", "cpu_usage": 0.0, "cost_per_hour": 0.05, "metadata": {"size_gb": 500, "orphan": true}},
+    {"id": "vol-temp-log", "type": "storage", "status": "available", "cpu_usage": 0.0, "cost_per_hour": 0.01, "metadata": {"size_gb": 100, "orphan": true}},
+    {"id": "vm-staging-app-1", "type": "instance", "status": "running", "cpu_usage": 2.0, "cost_per_hour": 0.192, "metadata": {"instance_type": "m5.xlarge", "env": "staging"}},
+    {"id": "vol-db-data", "type": "storage", "status": "running", "cpu_usage": 0.0, "cost_per_hour": 0.2, "metadata": {"size_gb": 2000, "attached_to": "vm-prod-db-1"}}
+]

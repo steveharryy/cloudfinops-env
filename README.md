@@ -1,88 +1,60 @@
----
-title: CloudFinOps OpenEnv
-emoji: 💰
-colorFrom: green
-colorTo: blue
-sdk: docker
-pinned: false
----
+# ☁️ CloudFinOps-Env: Data-Driven Cost Optimization
 
-# 💰 CloudFinOps-Env: Data-Driven Infrastructure Optimizer
+[![OpenEnv Compliant](https://img.shields.io/badge/OpenEnv-Compliant-green)](https://github.com/openenv-hackathon)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**CloudFinOps-Env** is a real-world Reinforcement Learning environment designed for the **Meta/Hugging Face OpenEnv Hackathon**. It turns an AI agent into a Cloud FinOps Engineer tasked with optimizing AWS-style infrastructure costs while maintaining strict performance SLAs.
+**CloudFinOps-Env** is a high-fidelity simulator designed for training Reinforcement Learning (RL) agents to optimize cloud infrastructure costs while strictly maintaining performance Service Level Agreements (SLAs).
 
-## 🚀 Environment Overview
+## 🚀 Why This Matters
+Cloud waste accounts for billions of dollars annually. Traditional rule-based scaling often fails in complex multi-resource environments. CloudFinOps-Env provides a safe sandbox for agents to learn the delicate balance between **Cost Efficiency** and **Performance Reliability**.
 
-The environment simulates a dynamic cloud footprint where resources (Instances, Storage, S3) generate costs and utilization metrics. The agent must make real-time decisions to reduce the "Cloud Bill" without causing production outages.
-
-### 🎯 Key Features
-- **RL Feedback Loop**: Granular "Points and Penalties" (Reward Shaping) system.
-- **Data-Centric**: Automatic **Trajectory Logging** (JSONL) for offline RL training and SFT.
-- **Real-World Snapshots**: Ability to ingest infrastructure JSON exports into the simulation.
-- **OpenEnv Compliant**: Fully implements the `step()`, `reset()`, and `state()` API.
-
----
-
-## 🏗️ Architecture
+## 🏗️ Advanced Architecture
+The environment follows the **OpenEnv standardized "Multi-Mode" structure**, ensuring complete compatibility with automated evaluation runners.
 
 ```mermaid
 graph TD
-    A[AI Agent] -->|Action| B(FastAPI OpenEnv API)
-    B -->|Process| C[CloudFinOps Engine]
-    C -->|Calculate| D[Reward Engine: Points & Penalties]
-    C -->|Update| E[Resource State Machine]
-    D -->|Log| F[Trajectory Dataset .jsonl]
-    E -->|Observe| G[Observation Space]
-    G -->|Return| A
+    User([Agent / Validator]) --> API[FastAPI Server]
+    API --> Env[CloudFinOps Engine]
+    Env --> State[Simulation State]
+    State --> Logic[SLA-Aware Reward Logic]
+    Env --> Data[JSON Snapshots / Real-world Footprints]
+    Env --> Logger[Trajectory Logger]
 ```
 
----
+## 🌟 Innovation Highlights
+-   **Snapshot Ingestion Engine**: Dynamically load real-world infrastructure footprints (VMs, EBS, S3) from JSON snapshots.
+-   **SLA-Aware Reward Function**: Penalties are heavily weighted toward CPU load breaches (>90%), forcing agents to prioritize stability over "blind" cost cutting.
+-   **Granular Action Space**: Support for `terminate`, `resize` (with performance recalibration), and `cleanup_orphaned` operations.
+-   **Automatic Trajectory Logging**: Every interaction is logged into `.jsonl` files, building a dataset for future offline RL training.
 
-## 📊 Scoreboard: Points & Penalties
+## 📊 Reward Engineering
+Our reward function is designed using a multi-component scoring system:
+$$ Reward = (Points_{savings} \times 10) + Bonus_{efficiency} - (Penalty_{SLA} \times 5) - Penalty_{risk} $$
 
-The reward function $R$ is explicitly designed to teach efficiency vs. risk:
+-   **Savings**: Normalized percentage of cost reduction.
+-   **SLA Penalty**: Triggered when any active instance exceeds 90% CPU load after a resize or resource shuffle.
 
-| Type | Action | Value | Description |
-| :--- | :--- | :--- | :--- |
-| ⭐ **Point** | **Cost Savings** | `+10.0` (max) | Scaled based on the percentage of hourly savings achieved. |
-| ⭐ **Point** | **Cleanup** | `+0.50` | Bonus for removing abandoned/orphaned resources. |
-| ❌ **Penalty** | **SLA Breach** | `-5.00` | Applied every step a resource's CPU usage exceeds **90%**. |
-| ❌ **Penalty** | **Aggressive Term** | `-1.00` | Penalty for deleting production-critical resources. |
-
----
-
-## 🛠️ Usage & Integration
-
-### Installation
+## 🛠️ Getting Started
+### Deployment
+Project is production-ready for Hugging Face Spaces.
 ```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Run server
+uvicorn server.app:app --host 0.0.0.0 --port 7860
 ```
 
-### Running Locally
+### Testing the Agent
+Run the baseline ReAct agent to see the environment in action:
 ```bash
-uvicorn app:app --host 0.0.0.0 --port 7860
-```
-
-### Baseline Agent
-The environment includes a ReAct-based agent (`inference.py`) that demonstrates zero-shot optimization using GPT-4o.
-
-```bash
-export OPENAI_API_KEY="your-key"
 python inference.py
 ```
 
----
-
-## 📂 Dataset Collection
-Every step taken by an agent is recorded in `data/trajectories/`. These files follow the Hugging Face dataset format:
-```json
-{"episode_id": "ep_123", "step": 5, "observation": {...}, "action": {...}, "reward": 8.5}
-```
+## 🗺️ Roadmap
+- [ ] **Multi-Cloud Support**: Expand metadata to support GCP and Azure pricing models.
+- [ ] **Dependency Modeling**: Introduce "Dependency Graphs" where terminating a DB resource affects the health of connected App resources.
+- [ ] **Grafana Dashboard**: Real-time visualization of agent performance and cost trajectories.
 
 ---
-
-## 📜 Metadata
-- **Domain**: Cloud Infrastructure / FinOps
-- **Difficulty**: Easy to Hard (3 Scenarios)
-- **Framework**: FastAPI / Pydantic / Docker
-- **License**: MIT
+Developed for the **OpenEnv Scaller Hackathon** by **spiderqwerty12**.

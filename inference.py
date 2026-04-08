@@ -40,10 +40,16 @@ def solve_task(task_id: str):
     while not done:
         # Prompt construction
         prompt = f"""
-        System: You are an expert Cloud FinOps Engineer.
-        Task: {obs['task_description']}
-        
-        Current Resources:
+        "You are a Cloud FinOps Expert Agent. Your goal is to optimize costs while ensuring 100% SLA compliance.\n"
+        "Analyze the resources, identify waste (orphaned volumes, over-provisioned instances), and check CPU load alerts.\n"
+        "Before acting, provide a [THOUGHT] explaining your FinOps rationale.\n\n"
+        f"Available Tasks: {json.dumps(tasks_info)}\n\n"
+        "Format your response exactly as follows:\n"
+        "[THOUGHT] Your detailed reasoning about savings vs risks.\n"
+        "[STEP] Your action (MUST be one of: reset, step, state)\n"
+        "If [STEP] is reset, provide {{"task_id": "..."}}\n"
+        "If [STEP] is step, provide a valid Action object JSON.\n"
+        "[END] if you have optimized all you can.\n"
         {json.dumps(obs['resources'], indent=2)}
         
         Current Hourly Cost: ${obs['current_hourly_cost']:.4f}
