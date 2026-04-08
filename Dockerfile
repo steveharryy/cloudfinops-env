@@ -1,17 +1,21 @@
-# Use Python 3.10 slim for efficiency
 FROM python:3.10-slim
+
+# Create a non-root user for security (HF requirement best practice)
+RUN useradd -m -u 1000 user
+USER user
+ENV PATH="/home/user/.local/bin:${PATH}"
 
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy requirements and install
+COPY --chown=user requirements.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-# Copy application code
-COPY . .
+# Copy everything else
+COPY --chown=user . .
 
-# Expose port 7860 (Hugging Face Spaces default)
+# HF Spaces run on port 7860
 EXPOSE 7860
 
-# Run the application
-CMD ["python", "app.py"]
+# Start the application
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
