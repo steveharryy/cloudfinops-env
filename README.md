@@ -1,6 +1,13 @@
-# CloudFinOps-Env
+---
+title: CloudFinOps OpenEnv
+emoji: 💰
+colorFrom: green
+colorTo: blue
+sdk: docker
+pinned: false
+---
 
-A real-world OpenEnv environment for training AI agents to optimize cloud infrastructure costs.
+# CloudFinOps-Env: Cloud Infrastructure Cost Optimizer
 
 ## 🚀 Overview
 **CloudFinOps-Env** simulates a cloud environment where an agent acts as a FinOps Engineer. The agent is tasked with reducing hourly infrastructure costs by terminating unused resources and rightsizing over-provisioned instances while maintaining performance SLAs.
