@@ -8,6 +8,7 @@ from tasks import TASKS
 from graders import GRADERS
 from snapshot_loader import SnapshotLoader
 
+app = FastAPI(title="CloudFinOps-Env", description="Data-Driven OpenEnv for Cost Optimization")
 engine = CloudFinOpsEngine()
 snapshot_loader = SnapshotLoader()
 
