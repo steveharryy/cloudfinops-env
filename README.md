@@ -7,53 +7,82 @@ sdk: docker
 pinned: false
 ---
 
-# CloudFinOps-Env: Cloud Infrastructure Cost Optimizer
+# 💰 CloudFinOps-Env: Data-Driven Infrastructure Optimizer
 
-## 🚀 Overview
-**CloudFinOps-Env** simulates a cloud environment where an agent acts as a FinOps Engineer. The agent is tasked with reducing hourly infrastructure costs by terminating unused resources and rightsizing over-provisioned instances while maintaining performance SLAs.
+**CloudFinOps-Env** is a real-world Reinforcement Learning environment designed for the **Meta/Hugging Face OpenEnv Hackathon**. It turns an AI agent into a Cloud FinOps Engineer tasked with optimizing AWS-style infrastructure costs while maintaining strict performance SLAs.
 
-## ⚙️ Action & Observation Spaces
+## 🚀 Environment Overview
 
-### Observation Space
-The observation is a JSON object containing:
-- `resources`: A list of all cloud resources (Instances, Storage, Buckets) with their current status, cost, and CPU/RAM usage.
-- `current_hourly_cost`: Total cost per hour for all running resources.
-- `alerts`: List of critical alerts (e.g., high CPU usage warnings).
-- `task_description`: The objective for the current episode.
+The environment simulates a dynamic cloud footprint where resources (Instances, Storage, S3) generate costs and utilization metrics. The agent must make real-time decisions to reduce the "Cloud Bill" without causing production outages.
 
-### Action Space
-Discrete actions represented as JSON:
-- `{"action_type": "terminate", "resource_id": "ID"}`: Completely remove a resource.
-- `{"action_type": "resize", "resource_id": "ID", "new_size": "t3.medium"}`: Change the instance type.
-- `{"action_type": "cleanup_orphaned"}`: Batch delete all storage volumes with status 'available'.
-- `{"action_type": "no_op"}`: Do nothing for one step.
+### 🎯 Key Features
+- **RL Feedback Loop**: Granular "Points and Penalties" (Reward Shaping) system.
+- **Data-Centric**: Automatic **Trajectory Logging** (JSONL) for offline RL training and SFT.
+- **Real-World Snapshots**: Ability to ingest infrastructure JSON exports into the simulation.
+- **OpenEnv Compliant**: Fully implements the `step()`, `reset()`, and `state()` API.
 
-## 🎯 Tasks & Difficulty
-1. **The Spring Clean (Easy)**: Identify and delete specific orphaned storage volumes.
-2. **Rightsize Architect (Medium)**: Analyze metrics and downsize over-provisioned VMs.
-3. **Strategic Portfolio (Hard)**: Mixed environment audit requiring both cleanup and rightsizing while preserving production stability.
+---
 
-## 🏆 Reward Function
-- **Positive Reward**: Proportional to the cost savings achieved.
-- **Negative Penalty**: Heavy penalty for SLA breaches (CPU > 90%) or terminating critical production servers.
-- **Efficiency Penalty**: Small penalty per step to encourage fast decision-making.
+## 🏗️ Architecture
 
-## 🛠️ Setup & Usage
+```mermaid
+graph TD
+    A[AI Agent] -->|Action| B(FastAPI OpenEnv API)
+    B -->|Process| C[CloudFinOps Engine]
+    C -->|Calculate| D[Reward Engine: Points & Penalties]
+    C -->|Update| E[Resource State Machine]
+    D -->|Log| F[Trajectory Dataset .jsonl]
+    E -->|Observe| G[Observation Space]
+    G -->|Return| A
+```
 
-### Running with Docker
+---
+
+## 📊 Scoreboard: Points & Penalties
+
+The reward function $R$ is explicitly designed to teach efficiency vs. risk:
+
+| Type | Action | Value | Description |
+| :--- | :--- | :--- | :--- |
+| ⭐ **Point** | **Cost Savings** | `+10.0` (max) | Scaled based on the percentage of hourly savings achieved. |
+| ⭐ **Point** | **Cleanup** | `+0.50` | Bonus for removing abandoned/orphaned resources. |
+| ❌ **Penalty** | **SLA Breach** | `-5.00` | Applied every step a resource's CPU usage exceeds **90%**. |
+| ❌ **Penalty** | **Aggressive Term** | `-1.00` | Penalty for deleting production-critical resources. |
+
+---
+
+## 🛠️ Usage & Integration
+
+### Installation
 ```bash
-docker build -t cloudfinops-env .
-docker run -p 7860:7860 cloudfinops-env
+pip install -r requirements.txt
 ```
 
 ### Running Locally
 ```bash
-pip install -r requirements.txt
-python app.py
+uvicorn app:app --host 0.0.0.0 --port 7860
 ```
 
-### Baseline Inference
-Ensure `API_BASE_URL` is set:
+### Baseline Agent
+The environment includes a ReAct-based agent (`inference.py`) that demonstrates zero-shot optimization using GPT-4o.
+
 ```bash
+export OPENAI_API_KEY="your-key"
 python inference.py
 ```
+
+---
+
+## 📂 Dataset Collection
+Every step taken by an agent is recorded in `data/trajectories/`. These files follow the Hugging Face dataset format:
+```json
+{"episode_id": "ep_123", "step": 5, "observation": {...}, "action": {...}, "reward": 8.5}
+```
+
+---
+
+## 📜 Metadata
+- **Domain**: Cloud Infrastructure / FinOps
+- **Difficulty**: Easy to Hard (3 Scenarios)
+- **Framework**: FastAPI / Pydantic / Docker
+- **License**: MIT
