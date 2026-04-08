@@ -1,5 +1,6 @@
 from typing import List
-from models import Resource, ResourceType, ResourceStatus
+from .models import Resource, ResourceType, ResourceStatus
+from .engine import INSTANCE_TYPES
 
 def get_task_1_resources() -> List[Resource]:
     """Task 1: The Spring Clean (Easy) - Delete 5 orphaned volumes."""

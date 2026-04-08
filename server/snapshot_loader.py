@@ -1,7 +1,7 @@
 import json
 import os
 from typing import List, Dict, Any
-from models import Resource, ResourceType, ResourceStatus
+from .models import Resource, ResourceType, ResourceStatus
 
 class SnapshotLoader:
     def __init__(self, snapshot_dir: str = "data/snapshots"):

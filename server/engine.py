@@ -1,10 +1,10 @@
 import uuid
 from typing import Dict, List, Tuple, Any
-from models import (
+from .models import (
     Resource, ResourceType, ResourceStatus, Action, ActionType, 
     Observation, State, StepResponse, RewardComponents
 )
-from logger import TrajectoryLogger
+from .logger import TrajectoryLogger
 
 # Standard Pricing/Specs
 INSTANCE_TYPES = {

@@ -2,11 +2,11 @@ import os
 from fastapi import FastAPI, HTTPException, Body, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Any, List
-from models import Action, StepResponse, Observation, State
-from engine import CloudFinOpsEngine
-from tasks import TASKS
-from graders import GRADERS
-from snapshot_loader import SnapshotLoader
+from .models import Action, StepResponse, Observation, State
+from .engine import CloudFinOpsEngine
+from .tasks import TASKS
+from .graders import GRADERS
+from .snapshot_loader import SnapshotLoader
 
 app = FastAPI(title="CloudFinOps-Env", description="Data-Driven OpenEnv for Cost Optimization")
 engine = CloudFinOpsEngine()
