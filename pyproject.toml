@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudfinops-env"
+version = "0.1.0"
+description = "A data-driven Cloud FinOps environment for Reinforcement Learning."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "openai",
+    "requests",
+    "PyYAML",
+    "python-dotenv",
+    "pandas",
+    "python-multipart"
+]
+
+[project.scripts]
+openenv-start = "app:main"
+
+[tool.setuptools]
+packages = ["."]
