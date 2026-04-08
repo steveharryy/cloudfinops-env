@@ -1,0 +1,23 @@
+name: CloudFinOps-Env
+version: 1.0.0
+description: "Optimizes cloud costs (VMs, Storage) while maintaining performance SLAs."
+task_type: discrete_optimization
+tags: ["finops", "cloud", "optimization", "agent-bench"]
+action_space:
+  type: json
+  description: "Union of operations: terminate, resize, cleanup_orphaned"
+observation_space:
+  type: json
+  description: "Snapshot of all cloud resources, their costs, and current CPU/RAM metrics."
+tasks:
+  - id: task-1
+    difficulty: easy
+    description: "Orphaned storage cleanup."
+  - id: task-2
+    difficulty: medium
+    description: "Instance rightsizing."
+  - id: task-3
+    difficulty: hard
+    description: "Mixed environment audit."
+authors: ["Antigravity"]
+license: MIT

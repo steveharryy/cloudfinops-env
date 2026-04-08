@@ -1,0 +1,18 @@
+[
+    {
+        "id": "real-vm-01",
+        "name": "Production-API-Gateway",
+        "type": "instance",
+        "status": "running",
+        "cost_per_hour": 0.384,
+        "cpu_usage": 5.0,
+        "metadata": {"instance_type": "m5.2xlarge"}
+    },
+    {
+        "id": "real-vol-01",
+        "name": "Old-Logs-Volume",
+        "type": "storage",
+        "status": "available",
+        "cost_per_hour": 0.15
+    }
+]
