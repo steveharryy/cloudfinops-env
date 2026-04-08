@@ -17,5 +17,5 @@ COPY --chown=user . .
 # HF Spaces run on port 7860
 EXPOSE 7860
 
-# Force uvicorn to run app.py
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+# Force uvicorn to run from server subpackage
+CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "7860"]

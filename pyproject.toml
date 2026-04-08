@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.scripts]
-openenv-server = "app:main"
+openenv-server = "server.app:main"
 
 [tool.setuptools]
 packages = ["."]
