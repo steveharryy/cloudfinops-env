@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException, Body, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Any, List
 from models import Action, StepResponse, Observation, State
 from engine import CloudFinOpsEngine
@@ -7,9 +8,24 @@ from tasks import TASKS
 from graders import GRADERS
 from snapshot_loader import SnapshotLoader
 
-app = FastAPI(title="CloudFinOps-Env", description="Data-Driven OpenEnv for Cost Optimization")
 engine = CloudFinOpsEngine()
 snapshot_loader = SnapshotLoader()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {
+        "message": "Welcome to CloudFinOps OpenEnv",
+        "status": "online",
+        "endpoints": ["/reset", "/step", "/tasks", "/state"]
+    }
 
 @app.get("/tasks")
 async def list_tasks():
