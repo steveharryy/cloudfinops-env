@@ -25,4 +25,4 @@ dependencies = [
 openenv-server = "server.app:main"
 
 [tool.setuptools]
-packages = ["."]
+packages = ["server"]

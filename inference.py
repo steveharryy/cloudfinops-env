@@ -4,6 +4,7 @@ import time
 from typing import List, Dict, Any
 from openai import OpenAI
 from dotenv import load_dotenv
+import requests # Ensure requests is here
 
 load_dotenv()
 

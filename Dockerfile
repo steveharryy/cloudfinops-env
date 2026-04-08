@@ -4,6 +4,8 @@ FROM python:3.10-slim
 RUN useradd -m -u 1000 user
 USER user
 ENV PATH="/home/user/.local/bin:${PATH}"
+# Force Python to see the 'server' folder as a root package
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 WORKDIR /app
 
