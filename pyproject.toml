@@ -17,11 +17,12 @@ dependencies = [
     "PyYAML",
     "python-dotenv",
     "pandas",
-    "python-multipart"
+    "python-multipart",
+    "openenv"
 ]
 
 [project.scripts]
-openenv-start = "app:main"
+openenv-server = "app:main"
 
 [tool.setuptools]
 packages = ["."]
