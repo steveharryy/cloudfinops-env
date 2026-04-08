@@ -10,7 +10,8 @@ load_dotenv()
 # Configuration
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:7860")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-key")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # No default to stay compliant
+HF_TOKEN = os.getenv("HF_TOKEN") # Added for compliance
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
